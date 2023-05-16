@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "159162534802",
+    "project_id": "recharge-app-d91d4",
+    "storage_bucket": "recharge-app-d91d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159162534802:android:fc6fc71adcb687caf74f4b",
+        "android_client_info": {
+          "package_name": "com.coverdata.afandenacards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159162534802-e51ma9n74eh3enho0idos2rncblbm2e1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB10wjKI4W3NJ_q84jyuBnEiS1NAbG_dU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159162534802-8uicffgcc60cleiuvb99binpq7dn1p56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159162534802:android:e5eb67ba1204912af74f4b",
+        "android_client_info": {
+          "package_name": "com.example.best_flutter_ui_templates"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159162534802-461c0s83b6u5tp3nqp5ntajanmfvkjtt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.best_flutter_ui_templates",
+            "certificate_hash": "cb53e25c24407141da4175c7f7d2298480770ec1"
+          }
+        },
+        {
+          "client_id": "159162534802-e51ma9n74eh3enho0idos2rncblbm2e1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB10wjKI4W3NJ_q84jyuBnEiS1NAbG_dU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159162534802-8uicffgcc60cleiuvb99binpq7dn1p56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

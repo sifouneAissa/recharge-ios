@@ -638,6 +638,7 @@ class _AddJawakerAcceleratorForm extends State<AddJawakerAcceleratorForm> {
             'type': 'point',
           };
 
+          print(ndata);
           AuthApi().updatePointCashUser(_cost);
 
           try {

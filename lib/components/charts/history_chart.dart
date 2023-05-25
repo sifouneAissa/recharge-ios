@@ -242,10 +242,14 @@ class _HistoryChartState extends State<HistoryChart> {
 
         t.forEach(
           (element) {
+
             bool isToken = element['type'] == 'token';
+            bool isAccepted =  element['accepted'];
+
             var value = smonths[
                 (DateTime.parse(element['created_at']).month + 1).toString()];
 
+            if(isAccepted)
             if (isToken) {
               stokens = stokens + element['count'];
               value!['token_cash'] = value!['token_cash']! + element!['count'];

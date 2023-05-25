@@ -74,8 +74,8 @@
     "last_notifications" : "آخر الاشعارات ",
     
     "transaction_type" : "نوع المعاملة",
-    "sending_add_jawker" : "جاري معاجلة الطلب ...",
-    "sending_add_tokens" : "جاري معالجة الطلب ...",
+    "sending_add_jawker" : "جاري التحويل ...",
+    "sending_add_tokens" : "جاري التحويل ...",
     "failed_add_tokens" : "المعرف خاطئ",
     "failed_add_jawaker" : "حدث خطأ في العملية",
     "request_success" : "سيتم مراجعة طلبك وستتلقى اشعارا لاحقا",

@@ -103,9 +103,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "request_success": MessageLookupByLibrary.simpleMessage(
             "سيتم مراجعة طلبك وستتلقى اشعارا لاحقا"),
         "sending_add_jawker":
-            MessageLookupByLibrary.simpleMessage("جاري معاجلة الطلب ..."),
+            MessageLookupByLibrary.simpleMessage("جاري التحويل ..."),
         "sending_add_tokens":
-            MessageLookupByLibrary.simpleMessage("جاري معالجة الطلب ..."),
+            MessageLookupByLibrary.simpleMessage("جاري التحويل ..."),
         "shop": MessageLookupByLibrary.simpleMessage("تسوق"),
         "sign_out": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "sign_up": MessageLookupByLibrary.simpleMessage("تسجيل"),

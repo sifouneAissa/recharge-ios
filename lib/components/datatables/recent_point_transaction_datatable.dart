@@ -150,6 +150,7 @@ class _RecentPointTransactionDatatable
   }
   bottomSheetBuilder(transaction) {
     bool isW = transaction['waiting'];
+    bool isA = transaction['accepted'] != null ? transaction['accepted'] : false;
     setState(() {
       _copied = false;
     });
@@ -290,10 +291,10 @@ class _RecentPointTransactionDatatable
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(S.of(context).player_name,
+                            Text('معرف اللاعب : ',
                                 style: TextStyle(
                                     color: FitnessAppTheme.lightText)),
-                            Text(transaction['player_name'].toString(),
+                            Text(transaction['name_of_player'].toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: FitnessAppTheme.lightText))
@@ -318,8 +319,7 @@ class _RecentPointTransactionDatatable
                       ),
                       isW
                           ? Container()
-                          : transaction['message'] != null ||
-                                  transaction['player_name'] != null
+                          : transaction['message'] != null 
                               ? Container(
                                   margin: EdgeInsets.only(
                                       top: 20, right: 30, left: 30),
@@ -356,7 +356,7 @@ class _RecentPointTransactionDatatable
                                                 ),
                                               )
                                             : Container(),
-                                        transaction['player_name'] != null
+                                        isA && transaction['player_name'] != null
                                             ? Container(
                                                 margin:
                                                     EdgeInsets.only(right: 0),
@@ -366,7 +366,7 @@ class _RecentPointTransactionDatatable
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    Text('معرف اللاعب : ',
+                                                    Text('اسم اللاعب : ',
                                                         style: TextStyle(
                                                             color:
                                                                 FitnessAppTheme

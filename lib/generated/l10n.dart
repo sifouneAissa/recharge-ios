@@ -780,20 +780,20 @@ class S {
     );
   }
 
-  /// `جاري معاجلة الطلب ...`
+  /// `جاري التحويل ...`
   String get sending_add_jawker {
     return Intl.message(
-      'جاري معاجلة الطلب ...',
+      'جاري التحويل ...',
       name: 'sending_add_jawker',
       desc: '',
       args: [],
     );
   }
 
-  /// `جاري معالجة الطلب ...`
+  /// `جاري التحويل ...`
   String get sending_add_tokens {
     return Intl.message(
-      'جاري معالجة الطلب ...',
+      'جاري التحويل ...',
       name: 'sending_add_tokens',
       desc: '',
       args: [],

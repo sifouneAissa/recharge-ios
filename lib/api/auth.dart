@@ -13,7 +13,7 @@ import 'package:dio/dio.dart';
 class AuthApi{
 
   // final String _url = 'https://recharge-web.afandena-cards.com/api/';
-  final String _url = 'http://192.168.1.6/api/';
+  final String _url = 'http://192.168.1.8/api/';
 
   getUrl(eurl){
     return _url + eurl;

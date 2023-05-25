@@ -1360,6 +1360,8 @@ class _TransactionDatatable extends State<TransactionDatatable>
 
   bottomSheetBuilderPoint(transaction) {
     bool isW = transaction['waiting'];
+    bool isA = transaction['accepted'] != null ? transaction['accepted'] : false;
+   
     setState(() {
       _copied = false;
     });
@@ -1375,20 +1377,17 @@ class _TransactionDatatable extends State<TransactionDatatable>
               StateSetter setState /*You can rename this!*/) {
             return Container(
               height: 450,
+              
               child: Container(
                   decoration: BoxDecoration(
-                    // color: transactionColors(transaction),
                     gradient: LinearGradient(colors: [
-                      HexColor((transactionColors(transaction) as Color)
-                          .value
-                          .toString()),
+                      HexColor((transactionColors(transaction) as Color).value.toString()),
                       HexColor(FitnessAppTheme.gradiantFc),
                       HexColor(FitnessAppTheme.gradiantFc),
                       // HexColor(FitnessAppTheme.gradiantSc),
                       // HexColor(FitnessAppTheme.gradiantSc),
                     ], begin: Alignment.topLeft, end: Alignment.bottomRight),
                     // color: transactionColors(transaction),
-
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20)),
@@ -1396,6 +1395,7 @@ class _TransactionDatatable extends State<TransactionDatatable>
                   margin: EdgeInsets.only(top: 0),
                   child: Column(
                     children: [
+                      
                       Container(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1417,18 +1417,17 @@ class _TransactionDatatable extends State<TransactionDatatable>
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(left: 10),
+                              margin: EdgeInsets.only(left: 20,bottom: 20),
                               child: GestureDetector(
-                                onTap: () async {
+                                onTap: () async{
                                   Clipboard.setData(ClipboardData(
-                                      text: getTextToCopyPoint(transaction)));
+                                      text: getTextToCopy(transaction)));
                                   setState(() {
-                                    _copied = true;
-                                  });
-                                  await Future.delayed(
-                                      const Duration(microseconds: 200));
+                                      _copied = true;
+                                    });
+                                  await Future.delayed(const Duration(milliseconds: 200));
                                   setState(() {
-                                    _copied = false;
+                                            _copied = false;
                                   });
                                 },
                                 child: Icon(
@@ -1436,7 +1435,7 @@ class _TransactionDatatable extends State<TransactionDatatable>
                                   size: 30,
                                   color: _copied
                                       ? Colors.greenAccent
-                                      : FitnessAppTheme.white,
+                                      : FitnessAppTheme.lightText,
                                 ),
                               ),
                             ),
@@ -1503,10 +1502,10 @@ class _TransactionDatatable extends State<TransactionDatatable>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(S.of(context).player_name,
+                            Text('معرف اللاعب : ',
                                 style: TextStyle(
                                     color: FitnessAppTheme.lightText)),
-                            Text(transaction['player_name'].toString(),
+                            Text(transaction['name_of_player'].toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: FitnessAppTheme.lightText))
@@ -1525,14 +1524,13 @@ class _TransactionDatatable extends State<TransactionDatatable>
                             Text(transaction['tdate'].toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: FitnessAppTheme.white))
+                                    color: FitnessAppTheme.lightText))
                           ],
                         ),
                       ),
                       isW
                           ? Container()
-                          : transaction['message'] != null ||
-                                  transaction['player_name'] != null
+                          : transaction['message'] != null 
                               ? Container(
                                   margin: EdgeInsets.only(
                                       top: 20, right: 30, left: 30),
@@ -1569,7 +1567,7 @@ class _TransactionDatatable extends State<TransactionDatatable>
                                                 ),
                                               )
                                             : Container(),
-                                        transaction['player_name'] != null
+                                        isA && transaction['player_name'] != null
                                             ? Container(
                                                 margin:
                                                     EdgeInsets.only(right: 0),
@@ -1590,9 +1588,8 @@ class _TransactionDatatable extends State<TransactionDatatable>
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            color:
-                                                                FitnessAppTheme
-                                                                    .white))
+                                                            color: FitnessAppTheme
+                                                                .lightText))
                                                   ],
                                                 ),
                                               )
@@ -1654,9 +1651,7 @@ class _TransactionDatatable extends State<TransactionDatatable>
                                           CrossAxisAlignment.center,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: [
-                                        _getPackagesPoint(transaction)
-                                      ],
+                                      children: [_getPackagesPoint(transaction)],
                                     ),
                                   )
                                 ],

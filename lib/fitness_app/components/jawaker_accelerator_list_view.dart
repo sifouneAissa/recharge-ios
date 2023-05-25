@@ -328,7 +328,7 @@ class _JawakerView extends State<JawakerView> {
                                 Container(
                                     margin: EdgeInsets.only(top: 20),
                                     child: SpinBox(
-                                      max: 100,
+                                      max: 999,
                                       value: selected != null ? int.parse(selected!.value) + 0.0 : 0,
                                       step: 1,
                                       spacing: 1,

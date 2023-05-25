@@ -609,7 +609,24 @@ class _AddJawakerAcceleratorForm extends State<AddJawakerAcceleratorForm> {
       ),
     );
   }
-
+  handleQuantityError(body){
+      print(body);
+      if(body['data']!=null){
+         bool error = body['data']['error'] == 'quantity_is_not_available';
+         if(error){
+                final snackBar = SnackBar(
+                  content: Text('الكمية غير متوفرة'),
+                  // action: SnackBarAction(
+                  //   label: 'Undo',
+                  //   onPressed: () {
+                  //     // Some code to undo the change.
+                  //   },
+                  // ),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+         }
+      }
+  }
   handleAddToken() async {
     if (_hasConnection) {
       if (_hasCash) {
@@ -652,11 +669,13 @@ class _AddJawakerAcceleratorForm extends State<AddJawakerAcceleratorForm> {
             } else {
               
               AuthApi().updatePointCashUser(-_cost);
+              handleQuantityError(body);
               setState(() {
                 _hasError = false;
               });
             }
           } catch (error) {
+            // print(error);
             AuthApi().updatePointCashUser(-_cost);
             handleSnackBarError();
           }

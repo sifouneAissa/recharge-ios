@@ -79,7 +79,7 @@ class _AddJawakerAcceleratorForm extends State<AddJawakerAcceleratorForm> {
   @override
   void initState() {
     super.initState();
-
+    if(this.mounted)
     setConnectionListner((hasI) {
       setHasConnection(hasI);
     });

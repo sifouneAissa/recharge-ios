@@ -607,6 +607,7 @@ class _AddTokenForm extends State<AddTokenForm> {
             var body = jsonDecode(res.body);
 
             if (body['status']) {
+              
               var data = AuthApi().getData(body);
               await AuthApi().updateUser(data);
               handleSnackBar();

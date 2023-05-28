@@ -66,6 +66,7 @@ class _RecentTokenTransactionDatatable
       setState(() {
         var data = AuthApi().getData(body);
         transactions = data['transactions'];
+        
         transactions = transactions
             .where((element) => element['type'] == 'token')
             .toList()
@@ -75,6 +76,7 @@ class _RecentTokenTransactionDatatable
 
       // await GetData().updateTransactions(transactions);
     }
+    
   }
 
   __getOldTransactions() async {

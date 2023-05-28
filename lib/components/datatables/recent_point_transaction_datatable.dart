@@ -63,7 +63,6 @@ class _RecentPointTransactionDatatable
     __getOldTransactions();
     // var t = await AuthApi().getTransactions();
     var t = await AuthApi().getRecentTransactions({'only': 5, 'type': 'point'});
-
     var body = t.data;
 
     if (body['status']) {

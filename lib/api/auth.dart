@@ -12,8 +12,8 @@ import 'package:dio/dio.dart';
 
 class AuthApi{
 
-  final String _url = 'https://recharge-web.afandena-cards.com/api/';
-  // final String _url = 'http://192.168.1.8/api/';
+  // final String _url = 'https://recharge-web.afandena-cards.com/api/';
+  final String _url = 'http://192.168.1.6/api/';
 
   getUrl(eurl){
     return _url + eurl;
@@ -110,6 +110,7 @@ class AuthApi{
  
 
   }
+
 
   
   getPointPackages() async {
@@ -264,6 +265,23 @@ class AuthApi{
      return await http.get(Uri.parse(fullUrl),headers: _setHeadersAuthorization(token));
  
   }
+  
+   getPaginatedTransactions(page) async{
+
+      var auth = await GetData().getAuth();
+      var token = await GetData().getToken();
+
+      var fullUrl = _url + 'transactions/'+auth['id'].toString();
+
+      Dio dio = Dio();
+      
+      return await dio.get(fullUrl,
+          queryParameters: {
+            'page' : page
+          },
+          options: Options(headers: _setHeadersAuthorization(token))
+       );
+  }
 
   getRecentTransactions(data) async{
 
@@ -273,9 +291,9 @@ class AuthApi{
       var fullUrl = _url + 'transactions/'+auth['id'].toString();
 
       Dio dio = Dio();
-
+      
       return await dio.get(fullUrl,
-          data: data,
+          queryParameters: data,
           options: Options(headers: _setHeadersAuthorization(token))
        );
   }
@@ -331,7 +349,7 @@ class AuthApi{
   };
 
   _setHeadersAuthorization(var token) => {
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
       'Accept': "*/*",
       'connection': 'keep-alive',
       'Accept-Encoding' : 'gzip, deflate, br',

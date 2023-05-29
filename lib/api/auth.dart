@@ -12,8 +12,8 @@ import 'package:dio/dio.dart';
 
 class AuthApi{
 
-  final String _url = 'https://recharge-web.afandena-cards.com/api/';
-  // final String _url = 'http://192.168.1.6/api/';
+  // final String _url = 'https://recharge-web.afandena-cards.com/api/';
+  final String _url = 'http://192.168.1.6/api/';
 
   getUrl(eurl){
     return _url + eurl;
@@ -110,7 +110,6 @@ class AuthApi{
  
 
   }
-
 
   
   getPointPackages() async {
@@ -265,7 +264,7 @@ class AuthApi{
      return await http.get(Uri.parse(fullUrl),headers: _setHeadersAuthorization(token));
  
   }
-  
+
    getPaginatedTransactions(page) async{
 
       var auth = await GetData().getAuth();
@@ -274,7 +273,7 @@ class AuthApi{
       var fullUrl = _url + 'transactions/'+auth['id'].toString();
 
       Dio dio = Dio();
-      
+
       return await dio.get(fullUrl,
           queryParameters: {
             'page' : page
@@ -291,9 +290,9 @@ class AuthApi{
       var fullUrl = _url + 'transactions/'+auth['id'].toString();
 
       Dio dio = Dio();
-      
+
       return await dio.get(fullUrl,
-          queryParameters: data,
+          data: data,
           options: Options(headers: _setHeadersAuthorization(token))
        );
   }
@@ -320,7 +319,7 @@ class AuthApi{
       var fullUrl = _url + 'notifications/'+auth['id'].toString() + '?page='+page.toString();
 
      return await http.get(Uri.parse(fullUrl),headers: _setHeadersAuthorization(token));
- 
+
   }
 
   filterDates(data) async{

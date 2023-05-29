@@ -7,6 +7,7 @@ import 'package:best_flutter_ui_templates/fitness_app/fitness_app_theme.dart';
 import 'package:best_flutter_ui_templates/generated/l10n.dart';
 import 'package:best_flutter_ui_templates/main.dart';
 import 'package:flutter/material.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationDatatable extends StatefulWidget {
   final ScrollController? parentScrollController;
@@ -21,114 +22,192 @@ class NotificationDatatable extends StatefulWidget {
 class _NotificationDatatable extends State<NotificationDatatable> {
   var notifications = [];
   var diffs = [];
+  Map<String, List<dynamic>> groups = {};
+
+  int _currentPage = 0;
+  int _rowsPerPage = 10; // Number of rows to display per page
 
   @override
   void initState() {
     __getNotifications();
+    timeago.setLocaleMessages('ar', timeago.ArMessages());
     super.initState();
 
     widget.parentScrollController?.addListener(() async {
       if (widget.parentScrollController?.position.pixels ==
           widget.parentScrollController?.position.minScrollExtent) {
+        setState(() {
+          _currentPage = 0;
+        });
         await __getNotifications();
       }
+
+      // if (widget.parentScrollController?.position.pixels ==
+      //     widget.parentScrollController?.position.maxScrollExtent) {
+      //   setState(() {
+      //     _currentPage = _currentPage + 1;
+      //   });
+      //   await __getNotifications();
+      // }
     });
+  }
+
+  DateTime convertToDateTime(String timeDifference) {
+    final now = DateTime.now();
+
+    if (timeDifference.contains('minute')) {
+      final minutes = int.parse(timeDifference.split(' ')[0]);
+      return now.subtract(Duration(minutes: minutes));
+    } else if (timeDifference.contains('hour')) {
+      final hours = int.parse(timeDifference.split(' ')[0]);
+      return now.subtract(Duration(hours: hours));
+    } else if (timeDifference.contains('day')) {
+      final days = int.parse(timeDifference.split(' ')[0]);
+      return now.subtract(Duration(days: days));
+    }
+
+    return now;
+  }
+
+  _gNotificationsList(var list) {
+    var notifications = [];
+    groups.values.forEach((element) {
+      element.forEach((celement) {
+        notifications.add(celement);
+      });
+    });
+
+    list.forEach((element) {
+      var exist;
+      try {
+        exist = notifications.firstWhere((oelement) {
+          return oelement['id'] == element['id'];
+        });
+      } catch (error) {
+        print(error);
+      }
+      if (exist == null) notifications.add(element);
+    });
+
+    notifications.sort((a, b) => DateTime.parse(b['created_at'])
+        .compareTo(DateTime.parse(a['created_at'])));
+
+    return notifications;
   }
 
   __getNotifications() async {
     __getOldNotifications();
-    var t = await AuthApi().getNotifications();
-    var body = jsonDecode(t.body);
-
+    // var t = await AuthApi().getNotifications();
+    var tp = await AuthApi().getPNotifications(_currentPage + 1);
+    var body = jsonDecode(tp.body);
     if (body['status']) {
-      if (this.mounted)
+      List<dynamic> list = body['data']['notifications'];
+      Map<String, List<dynamic>> groupedItems = {};
+      List<dynamic> allNotifications = _gNotificationsList(list);
+      if (this.mounted) {
+        allNotifications.forEach((element) {
+          var ldate = DateTime.parse(element['created_at']);
+          var key = timeago.format(ldate, locale: 'ar');
+          if (groupedItems.containsKey(key)) {
+            groupedItems[key]!.add(element);
+          } else {
+            groupedItems[key] = [element];
+          }
+        });
         setState(() {
-          var data = AuthApi().getData(body);
-          notifications = data['notifications'];
-          diffs = data['diffs'];
+          groups = groupedItems;
         });
 
-      await GetData().updateNotifications(notifications);
-      await GetData().updateDiffs(diffs);
+        await GetData().updateNotifications(groups);
+        await GetData().updateDiffs(diffs);
+      }
     }
   }
 
   __getOldNotifications() async {
     var t = await GetData().getNotification();
     var d = await GetData().getDiffs();
-
-    if (t != null) {
+    if (t != null && d != null && t != Null && d != Null) {
       setState(() {
-        notifications = jsonDecode(t);
+        // notifications = jsonDecode(t);
+        Map<String, dynamic> jsonMap = jsonDecode(t);
+
+        jsonMap.forEach((key, value) {
+          if (value is List<dynamic>) {
+            groups[key] = value;
+          }
+        });
         diffs = jsonDecode(d);
       });
     }
   }
 
   _getColumns() {
-    return List<Column>.generate(
-        diffs.length,
-        (index) => index != 0
-            ? Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Text(
-                        diffs[index],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: FitnessAppTheme.lightText),
-                      ),
+    // print(groups.values.toList());
+    var keys = groups.keys.toList();
+    return List<Column>.generate(keys.length, (index) {
+      return index != 0
+          ? Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 15),
+                    child: Text(
+                      keys[index],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: FitnessAppTheme.lightText),
                     ),
-                    Column(
-                      children: _getSubContainer(notifications[index]),
-                    )
-                  ])
-            : Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 120),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 24, right: 24),
-                            child: Text(
-                              S().last_notifications,
-                              // textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontFamily: FitnessAppTheme.fontName,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                letterSpacing: 0,
-                                color: FitnessAppTheme.lightText,
-                              ),
+                  ),
+                  Column(
+                    children: _getSubContainer(groups[keys[index]]),
+                  )
+                ])
+          : Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 120),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 24, right: 24),
+                          child: Text(
+                            S().last_notifications,
+                            // textAlign: TextAlign.right,
+                            style: TextStyle(
+                              fontFamily: FitnessAppTheme.fontName,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              letterSpacing: 0,
+                              color: FitnessAppTheme.lightText,
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 15),
-                          child: Text(
-                            diffs[index],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: FitnessAppTheme.lightText),
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: _getSubContainer(notifications[index]),
-                    )
-                  ]));
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 15),
+                        child: Text(
+                          keys[index],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: FitnessAppTheme.lightText),
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: _getSubContainer(groups[keys[index]]),
+                  )
+                ]);
+    });
   }
 
   _getSubContainer(notifications) {
@@ -181,7 +260,6 @@ class _NotificationDatatable extends State<NotificationDatatable> {
         !isMtransaction;
     var leftC = notification['info']['left_accepted'];
 
-    print(notification['info']['type']);
     bool left = (leftC != 0 && leftC != null) ||
         (notification['info']['type'] == 'point');
 
@@ -405,7 +483,7 @@ class _NotificationDatatable extends State<NotificationDatatable> {
             // scrollDirection: Axis.horizontal,
             child: Column(
           children: [
-            notifications.length == 0
+            groups.length == 0
                 ? Container(
                     margin: EdgeInsets.only(top: 0, bottom: 10),
                     decoration: BoxDecoration(
@@ -415,27 +493,55 @@ class _NotificationDatatable extends State<NotificationDatatable> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Column(
                       children: [
-                         Container(
+                        Container(
                           padding: EdgeInsets.only(
                               // top: MediaQuery.of(context).padding.top,
                               left: 16,
                               right: 16),
-                          child: Image.asset('assets/icons/logot.png',width: 250,),
+                          child: Image.asset(
+                            'assets/icons/logot.png',
+                            width: 250,
+                          ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(right: 11,left: 11,bottom: 11),
+                          padding:
+                              EdgeInsets.only(right: 11, left: 11, bottom: 11),
                           child: Text(
                             'لا توجد أي إشعارات',
                             style: TextStyle(color: Colors.white, fontSize: 40),
                           ),
                         ),
-                       
                       ],
                     ),
                   )
                 : Container(),
             Column(
-              children: _getColumns(),
+              children: [
+                Column(
+                  children: _getColumns(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors.transparent),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          _currentPage = _currentPage + 1;
+                        });
+                        await __getNotifications();
+                      },
+                      child: Text(
+                        'تحميل المزيد',
+                        style: TextStyle(fontSize: 16 ,color: FitnessAppTheme.nearlyDarkREd),
+                      ),
+                    ),
+                  ],
+                )
+              ],
             )
           ],
         )));

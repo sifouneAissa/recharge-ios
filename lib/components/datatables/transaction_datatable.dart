@@ -71,22 +71,23 @@ class _TransactionDatatable extends State<TransactionDatatable>
     {'id': '1', 'count': 'count', 'cost': 'cost', 'date': 'date'}
   ];
 
-  __getTransactions() async {
+  __getTransactions(more) async {
     __getOldTransactions();
     // var t = await AuthApi().getTransactions();
     print(_currentPage);
-    var pt = await AuthApi().getPaginatedTransactions(_currentPage + 1);
+    var pt = await AuthApi().getPaginatedTransactions(_currentPage + (more ? 2 : 1));
 
     var body = pt.data;
 
     if (body['status']) {
       List<dynamic> list = pt.data['data']['transactions'];
       List<dynamic> ltransactions = list;
-
+      print(list.length);
       if (this.mounted)
         setState(() {
           // var data = AuthApi().getData(body);
           // transactions = data['transactions'];
+          
           transactions.forEach((oelement) {
             var element;
             try {
@@ -97,6 +98,7 @@ class _TransactionDatatable extends State<TransactionDatatable>
             ltransactions.add(oelement);
             
           });
+          
           ltransactions.sort((a, b) {
                 return (b['id'] as int ).compareTo(a['id'] as int);
           });
@@ -130,12 +132,12 @@ class _TransactionDatatable extends State<TransactionDatatable>
     //   _launchURL();
     // });
 
-    __getTransactions();
+    __getTransactions(false);
     super.initState();
     widget.parentScrollController?.addListener(() async {
       if (widget.parentScrollController?.position.pixels ==
           widget.parentScrollController?.position.minScrollExtent) {
-        await __getTransactions();
+        await __getTransactions(false);
       }
     });
 
@@ -2188,11 +2190,10 @@ class _TransactionDatatable extends State<TransactionDatatable>
                 children: [
                   IconButton(
                     icon: Icon(Icons.chevron_left),
-                    onPressed: () {
+                    onPressed: () async{
                       setState(() {
                         _currentPage =
                             (_currentPage - 1).clamp(0, _getTotalPages() - 1);
-                        // print(_currentPage);
                       });
                     },
                   ),
@@ -2202,11 +2203,15 @@ class _TransactionDatatable extends State<TransactionDatatable>
                   ),
                   IconButton(
                     icon: Icon(Icons.chevron_right),
-                    onPressed: () {
+                    onPressed: () async {
+                      // await __getTransactions(false,null);
                       setState(() {
                         _currentPage =
                             (_currentPage + 1).clamp(0, _getTotalPages() - 1);
+                            
                       });
+                      
+                      await __getTransactions(true);
                     },
                   ),
                 ],

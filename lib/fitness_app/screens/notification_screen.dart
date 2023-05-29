@@ -95,7 +95,7 @@ class _NotificationScreenState extends State<NotificationScreen>
     //   ),
     // );
 
-    listViews.add(NotificationDatatable());
+    listViews.add(NotificationDatatable(parentScrollController: scrollController,));
 
     // listViews.add(
     //   JawakerAcceleratorListView(

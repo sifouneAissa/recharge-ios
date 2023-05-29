@@ -12,8 +12,8 @@ import 'package:dio/dio.dart';
 
 class AuthApi{
 
-  // final String _url = 'https://recharge-web.afandena-cards.com/api/';
-  final String _url = 'http://192.168.1.6/api/';
+  final String _url = 'https://recharge-web.afandena-cards.com/api/';
+  // final String _url = 'http://192.168.1.6/api/';
 
   getUrl(eurl){
     return _url + eurl;
@@ -307,6 +307,17 @@ class AuthApi{
 
       print('_url');
       print(_url);
+
+     return await http.get(Uri.parse(fullUrl),headers: _setHeadersAuthorization(token));
+ 
+  }
+
+  getPNotifications(page) async{
+
+      var auth = await GetData().getAuth();
+      var token = await GetData().getToken();
+
+      var fullUrl = _url + 'notifications/'+auth['id'].toString() + '?page='+page.toString();
 
      return await http.get(Uri.parse(fullUrl),headers: _setHeadersAuthorization(token));
  

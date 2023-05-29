@@ -1864,10 +1864,14 @@ class _TransactionDatatable extends State<TransactionDatatable>
 
     final uri = Uri.parse(b_url);
 
-    if (await canLaunchUrl(uri)) {
+    try{
+if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       print('could not lunch url');
+    }
+    }catch(error){
+
     }
   }
 

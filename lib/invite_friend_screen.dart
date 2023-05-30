@@ -24,11 +24,11 @@ _shareData(){
     var brightness = Theme.of(context).brightness;
     bool isLightMode = brightness == Brightness.light;
     return Container(
-      color: isLightMode ? AppTheme.white : AppTheme.nearlyBlack,
+      decoration: getBoxBackgroud(),
       child: SafeArea(
         top: false,
         child: Scaffold(
-          backgroundColor: isLightMode ? AppTheme.white : AppTheme.nearlyBlack,
+          backgroundColor: Colors.transparent,
           body: Container(
             decoration: getBoxBackgroud(),
             child: Column(

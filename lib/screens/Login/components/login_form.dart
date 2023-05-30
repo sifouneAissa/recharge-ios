@@ -365,7 +365,8 @@ Future<UserCredential> signInWithFacebook() async {
                 ),
               );
             },
-          )
+          ),
+
         ],
       ),
     );

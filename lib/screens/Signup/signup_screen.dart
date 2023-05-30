@@ -12,32 +12,35 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: FitnessAppTheme.nearlyBlack,
-      resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        child: Responsive(
-          mobile: const MobileSignupScreen(),
-          desktop: Row(
-            children: [
-              const Expanded(
-                child: SignUpScreenTopImage(),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    SizedBox(
-                      width: 450,
-                      child: SignUpForm(),
-                    ),
-                    // SizedBox(height: defaultPadding / 2),
-                    // SocalSignUp()
-                  ],
+    return Container(
+      decoration: getBoxBackgroud(),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: Responsive(
+            mobile: const MobileSignupScreen(),
+            desktop: Row(
+              children: [
+                const Expanded(
+                  child: SignUpScreenTopImage(),
                 ),
-              )
-            ],
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      SizedBox(
+                        width: 450,
+                        child: SignUpForm(),
+                      ),
+                      // SizedBox(height: defaultPadding / 2),
+                      // SocalSignUp()
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -53,6 +56,7 @@ class MobileSignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
           decoration: getBoxBackgroud(),
       child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

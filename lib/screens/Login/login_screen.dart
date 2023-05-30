@@ -12,32 +12,37 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: FitnessAppTheme.nearlyBlack,
-      resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        child: Responsive(
-          mobile:  MobileLoginScreen(),
-          desktop: Container(
-          decoration: getBoxBackgroud(),
-            child: Row(
-            children: [
-              const Expanded(
-                child: LoginScreenTopImage(),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SizedBox(
-                      width: 450,
-                      child: LoginForm(),
+    return Container(
+      decoration: getBoxBackgroud(),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+
+          child: Responsive(
+            mobile:  MobileLoginScreen(),
+            desktop: Container(
+              decoration: getBoxBackgroud(),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: LoginScreenTopImage(),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        SizedBox(
+                          width: 450,
+                          child: LoginForm(),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+
           ),
         ),
       ),
@@ -53,6 +58,7 @@ class MobileLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
           decoration: getBoxBackgroud(),
       child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -68,7 +74,6 @@ class MobileLoginScreen extends StatelessWidget {
             Spacer(),
           ],
         ),
-        Container(height: 80,)
       ],
     ),
     );

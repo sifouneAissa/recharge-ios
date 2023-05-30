@@ -153,13 +153,16 @@ class _NotificationDatatable extends State<NotificationDatatable> {
               children: [
                   Container(
                     margin: EdgeInsets.only(left: 15),
-                    child: Text(
-                      keys[index],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: FitnessAppTheme.lightText),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        keys[index],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: FitnessAppTheme.lightText),
+                      ),
                     ),
                   ),
                   Column(
@@ -190,15 +193,17 @@ class _NotificationDatatable extends State<NotificationDatatable> {
                           ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(left: 15),
-                        child: Text(
-                          keys[index],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: FitnessAppTheme.lightText),
+                      Expanded(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            keys[index],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: FitnessAppTheme.lightText),
+                          ),
                         ),
                       )
                     ],

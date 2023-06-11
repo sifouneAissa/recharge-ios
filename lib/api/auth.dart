@@ -31,11 +31,10 @@ class AuthApi{
 // }
 
       var token_firebase =  await GetData().getFirebaseToken();
-
+      if(token_firebase!=null)
       data['token_firebase'] = token_firebase;
 
       var fullUrl = _url + 'login';
-
       return await http.post(Uri.parse(fullUrl),body: jsonEncode(data),headers: _setHeaders());
   }
 
@@ -43,6 +42,7 @@ class AuthApi{
 
       var token_firebase =  await GetData().getFirebaseToken();
       var fullUrl = _url + 'register';
+      if(token_firebase!=null)
       data['token_firebase'] = token_firebase;
 
       return await http.post(Uri.parse(fullUrl),body: jsonEncode(data),headers: _setHeaders()).timeout(_hasConnection ? Duration(seconds: 60) : Duration.zero);

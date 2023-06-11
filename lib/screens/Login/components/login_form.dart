@@ -40,7 +40,10 @@ class _LoginForm extends State<LoginForm> {
     super.initState();
     
     FirebaseMessaging.instance.getToken().then((value) async {
+        print('value token');
+        print(value);
         var storage = await GetData().getInstance();
+
         storage.setString('firebase_token',value);
     },);
 
@@ -382,7 +385,6 @@ handleLogin() async {
         EasyLoading.show(
             status: 'جاري التحقق ...', maskType: EasyLoadingMaskType.custom);
       });
-
       var data = {'email': email.text, 'password': password.text};
 
       try {
@@ -426,6 +428,8 @@ handleLogin() async {
           });
         }
       } catch (error) {
+        print('this me');
+        print(error);
         handleSnackBarError();
       }
 
@@ -581,6 +585,8 @@ handleSLogin(String driver,userId,sdata) async {
           handleSnackBarErrorFacebook(sdata);
         }
       } catch (error) {
+        print('erorr');
+        print(error);
         handleSnackBarError();
       }
 

@@ -36,10 +36,33 @@ class _SignUpForm extends State<SignUpForm> {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  initFirebase() async{
+
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
   @override
   void initState() {
     super.initState();
 
+    initFirebase();
     FirebaseMessaging.instance.getToken().then(
       (value) async {
         var storage = await GetData().getInstance();

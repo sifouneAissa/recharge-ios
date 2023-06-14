@@ -12,8 +12,8 @@ import 'package:dio/dio.dart';
 
 class AuthApi{
 
-  final String _url = 'https://recharge-web.afandena-cards.com/api/';
-  //final String _url = 'http://192.168.1.6/api/';
+  // final String _url = 'https://recharge-web.afandena-cards.com/api/';
+  final String _url = 'http://192.168.1.5/api/';
 
   getUrl(eurl){
     return _url + eurl;
@@ -81,7 +81,16 @@ class AuthApi{
  
   }
 
+  deleteAccount(data) async{
 
+    var auth = await GetData().getAuth();
+    var token = await GetData().getToken();
+
+    var fullUrl = _url + 'user/delete/'+auth['id'].toString();
+
+    return await http.post(Uri.parse(fullUrl),body: jsonEncode(data),headers: _setHeadersAuthorization(token));
+
+  }
 
   addToken(data,_hasConnection) async {
 

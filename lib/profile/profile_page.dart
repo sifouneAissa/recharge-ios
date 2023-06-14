@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:best_flutter_ui_templates/constants.dart';
 import 'package:best_flutter_ui_templates/fitness_app/fitness_app_theme.dart';
 import 'package:best_flutter_ui_templates/profile/appbar_widget.dart';
+import 'package:best_flutter_ui_templates/profile/delete_account.dart';
 import 'package:best_flutter_ui_templates/profile/display_image_widget.dart';
 import 'package:best_flutter_ui_templates/profile/edit_description.dart';
 import 'package:best_flutter_ui_templates/profile/edit_email.dart';
@@ -82,6 +83,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     _getUser();
                   },
                 )),
+                buildUserInfoDisplay('ازالة الحساب', 'الحساب',
+                    DeleteAccountPage(
+                      updateUser: () {
+                        _getUser();
+                      },
+                    )),
                 // Expanded(
                 //   child: buildAbout(user),
                 //   flex: 4,
@@ -95,53 +102,58 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // Widget builds the display item with the proper formatting to display the user's info
-  Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) =>
-      Padding(
-          padding: EdgeInsets.only(bottom: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey,
-                ),
+  Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) {
+    Color color = FitnessAppTheme.nearlyWhite;
+    if(editPage is DeleteAccountPage){
+      color = Colors.red;
+    }
+    return Padding(
+        padding: EdgeInsets.only(bottom: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
               ),
-              SizedBox(
-                height: 1,
-              ),
-              Container(
-                  width: 350,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                    color: FitnessAppTheme.nearlyWhite,
-                    width: 1,
-                  ))),
-                  child: Row(children: [
-                    Expanded(
-                        child: TextButton(
-                            onPressed: () {
-                              navigateSecondPage(editPage);
-                            },
-                            child: Text(
-                              getValue,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  height: 1.4,
-                                  color: FitnessAppTheme.nearlyWhite),
-                            ))),
-                    Icon(
-                      Icons.keyboard_arrow_left,
-                      color: FitnessAppTheme.nearlyWhite,
-                      size: 40.0,
-                    )
-                  ]))
-            ],
-          ));
+            ),
+            SizedBox(
+              height: 1,
+            ),
+            Container(
+                width: 350,
+                height: 40,
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                          color: FitnessAppTheme.nearlyWhite,
+                          width: 1,
+                        ))),
+                child: Row(children: [
+                  Expanded(
+                      child: TextButton(
+                          onPressed: () {
+                            navigateSecondPage(editPage);
+                          },
+                          child: Text(
+                            getValue,
+                            style: TextStyle(
+                                fontSize: 16,
+                                height: 1.4,
+                                color: color),
+                          ))),
+                  Icon(
+                    Icons.keyboard_arrow_left,
+                    color: color,
+                    size: 40.0,
+                  )
+                ]))
+          ],
+        ));
+  }
 
   // Widget builds the About Me Section
   Widget buildAbout(User user) => Padding(
